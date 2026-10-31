@@ -1,0 +1,10 @@
+{
+  "name": "netflix-enhancements",
+  "version": "1.2.0",
+  "private": true,
+  "description": "Configurable Netflix playback enhancements userscript",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/script.user.js"
+  }
+}
