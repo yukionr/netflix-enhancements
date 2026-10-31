@@ -12,6 +12,10 @@ Use a userscript manager such as Violentmonkey. Open
 installation in the manager. Reload Netflix after installing or updating.
 The source needs no build step or runtime dependencies.
 
+The script loads only on `https://www.netflix.com/watch/*` pages. If playback
+opens through in-page navigation from another Netflix page, reload the watch
+page to load the script.
+
 When updating the former Netflix Blurred Bars script, replace its existing
 source instead of running a second copy. The script name is **Netflix
 Enhancements**; the namespace remains `local.netflix-blurred-bars` for update
@@ -56,9 +60,11 @@ other open Netflix tabs to apply them there.
 | `d` / `e` or `Esc` | Lock / release the pointer, subject to browser permission |
 | `h` | Show shortcut help |
 
-Shortcuts ignore text inputs, editable content, IME composition and Ctrl/Alt/Meta
-combinations. The wheel raises or lowers volume by 5 percentage points and
-unmutes on increase. It leaves scrolling outside the player and Ctrl+wheel alone.
+Shortcuts and wheel controls accept only trusted browser input events and ignore
+events dispatched by page scripts. They also ignore text inputs, editable content,
+IME composition and Ctrl/Alt/Meta combinations. The wheel raises or lowers volume
+by 5 percentage points and unmutes on increase. It leaves scrolling outside the
+player and Ctrl+wheel alone.
 Zoom applies scaling after Netflix's positioning transform, keeping its visual
 center fixed during zoom, resize and fullscreen changes. It affects the video only;
 subtitles remain at their original size. The 21:9 preset is a fixed crop, not
@@ -88,7 +94,7 @@ not bypass DRM or modify playback protection. Fullscreening the video element
 alone cannot show sibling backgrounds; player fullscreen is supported.
 
 The script makes no network requests and stores feature settings, never video
-frames. **Netflix blurred bars diagnostics (v1.2.0)** reports geometry, renderer,
+frames. **Netflix blurred bars diagnostics (v1.2.1)** reports geometry, renderer,
 and frame-copy availability without URLs, page text, account data, or frames.
 The metadata icon references a Netflix-hosted icon, which the userscript manager
 may retrieve.

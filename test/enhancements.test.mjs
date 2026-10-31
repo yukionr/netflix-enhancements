@@ -54,7 +54,7 @@ function fixture() {
     });
     controller.update();
     function event(properties = {}) {
-        return { target: current, key: '', prevented: false, preventDefault() { this.prevented = true; }, ...properties };
+        return { target: current, key: '', isTrusted: true, prevented: false, preventDefault() { this.prevented = true; }, ...properties };
     }
     return {
         controller, settings, document, location, nodes, changes, title,
@@ -99,6 +99,22 @@ test('typing, composition, shortcuts with modifiers and non-player pages remain 
     f.location.pathname = '/browse';
     assert.equal(f.key('+').prevented, false);
     assert.equal(f.wheel().prevented, false);
+});
+
+test('untrusted input cannot change zoom, persist settings, unmute video, or request pointer lock', () => {
+    const f = fixture();
+    let locks = 0;
+    f.video.requestPointerLock = () => { locks += 1; };
+    for (const key of ['+', '.', 'q', 'd']) {
+        assert.equal(f.key(key, { isTrusted: false }).prevented, false);
+    }
+    assert.equal(f.video.style.getPropertyValue('transform'), '');
+    assert.equal(f.settings.statistics, false);
+    assert.equal(f.changes.length, 0);
+    assert.equal(locks, 0);
+    assert.equal(f.wheel({ isTrusted: false }).prevented, false);
+    assert.equal(f.video.volume, 0.5);
+    assert.equal(f.video.muted, true);
 });
 
 test('wheel controls only player volume, clamps it, and unmutes only on increase', () => {

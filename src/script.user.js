@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Netflix Enhancements
 // @namespace    local.netflix-blurred-bars
-// @version      1.2.0
+// @version      1.2.1
 // @description  Configurable blurred bars, ultrawide zoom, shortcuts, wheel volume, video statistics and tab titles for Netflix.
 // @icon         https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico
-// @match        https://www.netflix.com/*
+// @match        https://www.netflix.com/watch/*
 // @run-at       document-idle
 // @noframes
 // @grant        GM_registerMenuCommand
@@ -17,7 +17,7 @@
     'use strict';
 
     if (typeof GM_log === 'function' && typeof document !== 'undefined') {
-        GM_log(JSON.stringify({ version: '1.2.0', event: 'started' }));
+        GM_log(JSON.stringify({ version: '1.2.1', event: 'started' }));
     }
 
     // Return player-relative side margins and the size of a centered cover image.
@@ -175,7 +175,7 @@
                 Boolean(target?.closest?.('[contenteditable=""], [contenteditable="true"], [role="textbox"]'));
         }
         function ignore(event) {
-            return event.defaultPrevented || event.isComposing || event.keyCode === 229 ||
+            return event.isTrusted !== true || event.defaultPrevented || event.isComposing || event.keyCode === 229 ||
                 event.ctrlKey || event.altKey || event.metaKey || typing(event.target);
         }
 
@@ -227,7 +227,7 @@
     if (typeof module !== 'undefined') module.exports = { layout, createEnhancements, validSettings };
     if (typeof document === 'undefined') return;
 
-    const version = '1.2.0';
+    const version = '1.2.1';
     const stored = GM_getValue('settings', {});
     const settings = { ...defaults, ...(validSettings(stored) ? stored : {}) };
     const imageId = 'local-netflix-blurred-bars-video';

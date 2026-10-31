@@ -251,11 +251,11 @@ test('diagnostics identify the running version, renderer and measured layout wit
     assert.ok(menu, 'a versioned diagnostic menu is available');
     menu.callback();
     const report = JSON.parse(f.prompts[0]);
-    assert.equal(report.version, '1.2.0');
+    assert.equal(report.version, '1.2.1');
     assert.equal(report.renderer, 'firefox-css');
     assert.equal(report.status, 'active');
     assert.equal(report.overlays.length, 1);
-    assert.equal(report.overlays[0].version, '1.2.0');
+    assert.equal(report.overlays[0].version, '1.2.1');
     assert.equal(report.videos[0].source.width, 1920);
     assert.equal(report.videos[0].rect.width, 2560);
     assert.equal(report.videos[0].player.rect.width, 2560);
@@ -274,7 +274,7 @@ test('logs measured geometry and frame-copy support once per layout for granted-
     const f = fixture();
     assert.equal(f.logs.length, 1);
     const report = JSON.parse(f.logs[0]);
-    assert.equal(report.version, '1.2.0');
+    assert.equal(report.version, '1.2.1');
     assert.equal(report.renderer, 'firefox-css');
     assert.equal(report.frameCopy, 'available');
     assert.equal(report.overlays[0].panels.length, 2);
@@ -385,8 +385,9 @@ test('keeps update identity and exposes only the required storage and menu APIs'
     const header = source().split('// ==/UserScript==')[0];
     assert.match(header, /@name\s+Netflix Enhancements\n/);
     assert.match(header, /@namespace\s+local.netflix-blurred-bars\n/);
-    assert.match(header, /@version\s+1\.2\.0\n/);
-    assert.match(header, /@match\s+https:\/\/www\.netflix\.com\/\*\n/);
+    assert.match(header, /@version\s+1\.2\.1\n/);
+    assert.deepEqual([...header.matchAll(/@match\s+(\S+)/g)].map((match) => match[1]),
+        ['https://www.netflix.com/watch/*']);
     assert.deepEqual([...header.matchAll(/@grant\s+(\S+)/g)].map((match) => match[1]).sort(),
         ['GM_getValue', 'GM_log', 'GM_registerMenuCommand', 'GM_setValue']);
 });
